@@ -1,23 +1,20 @@
-import logo from './logo.svg';
+import { ReactComponent as Light } from './lightbulb.svg';
+import { useState, useRef } from 'react';
 import './App.css';
 
 function App() {
+  const [colors, setColor] = useState([]);
+
+  if (colors.length == 0) {
+    // initialize 
+    setColor(['#AA3AAA', '#AA5AAA', '#AA7AAA', '#AA9AAA', '#AAAAAA', '#AACAAA', '#AAEAAA']);
+  }
+
+  const lights = colors.map((e, i) => <Light fill={e} className='lightbulb'/>)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {lights}
     </div>
   );
 }
