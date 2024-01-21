@@ -1,5 +1,5 @@
 import { ReactComponent as Light } from './lightbulb.svg';
-import { useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Slider from '@mui/material/Slider';
 import './App.css';
 import Box from '@mui/material/Box';
@@ -14,31 +14,52 @@ import Select from '@mui/material/Select';
 
 
 function App() {
-  const [colors, setColor] = useState([]);
+  const [colors, setColor] = useState(['#ffadad', '#ffd6a5', '#fdffb6', '#caffbf', '#9bf6ff', '#a0c4ff', '#bdb2ff', '#ffc6ff', '#ffadad', '#ffd6a5', '#fdffb6', '#caffbf', '#9bf6ff', '#a0c4ff', '#bdb2ff', '#ffc6ff']);
 
-  if (colors.length == 0) {
-    // initialize 
-    setColor(['#AA3AAA', '#AA5AAA', '#AA7AAA', '#AA9AAA', '#AAAAAA', '#AACAAA', '#AAEAAA']);
-  }
+  // speed domain 0-100 => updateTime range 1000-100
+  const [speed, setSpeed] = useState(30);
+  const handleSpeedChange = (event, newSpeed) => {
+    setSpeed(newSpeed);
+  };
 
-  const lights = colors.map((e, i) => <Light fill={e} className='lightbulb' />)
+  const [theme, setTheme] = useState('');
+  const handleThemeChange = (event) => {
+    setTheme(event.target.value);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // change of lights
+      let newColors = [...colors]
+      newColors.unshift(newColors.pop());
+      setColor(newColors);
+
+      // interval of change
+    }, 1000 - 9 * speed);
+
+    return () => clearInterval(interval);
+  }, [speed, colors]);
+
+  var lights = colors.slice(0, 9).map((e, i) => <Light fill={e} key={`light${i}`} className='lightbulb' />)
 
   return (
-    <div className="App">
-      {lights}
+    <div className="App">      
+      <div>
+        {lights}
+      </div>
+      <div>
+        {lights}
+      </div>
+      
       <div className="Settings">
-        {SpeedControls()}
-        {ThemeSettings()}
+        <SpeedControls speed={speed} handleSpeedChange={handleSpeedChange} />
+        <ThemeSettings theme={theme} handleThemeChange={handleThemeChange} />
       </div>
     </div>
   );
 }
 
-function SpeedControls() {
-  const [value, setValue] = useState(30);
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+function SpeedControls({ speed, handleSpeedChange }) {
 
   return (
     <div className='SpeedControls'>
@@ -46,7 +67,7 @@ function SpeedControls() {
         <p className='label'>speed</p>
         <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
           <KeyboardArrowRightIcon className="downIcon" />
-          <Slider aria-label="Volume" value={value} onChange={handleChange} />
+          <Slider aria-label="Speed" value={speed} onChange={handleSpeedChange} />
           <KeyboardDoubleArrowRightIcon className="upIcon" />
         </Stack>
       </Box>
@@ -54,12 +75,10 @@ function SpeedControls() {
   )
 }
 
-function ThemeSettings() {
-  const [age, setAge] = useState('');
+function ThemeSettings({ theme, handleThemeChange }) {
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
+  const themeTexts = ["Rainbow 1", "Christmas", "White", "Red", "Teal", "Purple"];
+  const themeMenuItems = themeTexts.map((e, i) => <MenuItem value={i} className="ThemeText">{e}</MenuItem>)
 
   return (
     <div className='ThemeSettings'>
@@ -69,14 +88,12 @@ function ThemeSettings() {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={age}
+            value={theme}
             label="Theme"
-            onChange={handleChange}
+            onChange={handleThemeChange}
             className="ThemeText"
           >
-            <MenuItem value={10} className="ThemeText">Theme Type 1</MenuItem>
-            <MenuItem value={20} className="ThemeText">Theme Type 2</MenuItem>
-            <MenuItem value={30} className="ThemeText">Theme Type 3</MenuItem>
+            {themeMenuItems}
           </Select>
         </FormControl>
       </Box>

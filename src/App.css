@@ -1,6 +1,6 @@
 :root {
   --text-color:#BBBBBB;
-  --background-color:#282c34;
+  --background-color:#26312e;
 }
 
 .App {
@@ -47,6 +47,13 @@ Slider {
   justify-content: space-between;
   align-items: center;
   padding-inline: 50px;
+}
+
+.Lights {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .ThemeSettings {
