@@ -6,14 +6,14 @@
 .App {
   text-align: center;
   background-color: var(--background-color);
-  height:100vh;
+  min-height:100vh;
   width:100vw;
 }
 
 .lightbulb {
   width: 10%;
   height: auto;
-  margin-top: 10%;
+  margin-top: 5%;
 }
 
 Slider {
@@ -32,26 +32,26 @@ Slider {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 100px;
-  margin-left: 5%;
+  margin: 100px 100px 0 5%;
 }
 
 .label {
   margin: 0px 0px 10px 0px;
   color: var(--text-color);
+  font-size:20px;
 }
 
 .Settings {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items:self-end;
   padding-inline: 50px;
 }
 
 .Lights {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
